@@ -1,10 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
 .footer {
     width: 100%;
-    background: #100079;
+    background: #363332;
     color: #fff;
     display: flex;
     justify-content: center;
     margin-top: 50px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
 }
 
 .wrapFooter {
@@ -15,12 +19,14 @@
     display: flex;
     justify-content: space-between;
     padding: 20px 0px;
+    font-size:24px;
 }
 
 .copyright {
     display: flex;
     justify-content: center;
-    font-size: 15px;
+    font-size: 20px;
+    margin-bottom:20px;
 }
 
 .contactIcon {
@@ -31,7 +37,10 @@
     margin: 3px 5px;
 }
 
+
+
 .detailFoot {
-    font-size: 13px;
+    font-size: 20px;
     margin: 5px 0px;
+
 }

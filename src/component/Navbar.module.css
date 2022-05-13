@@ -1,3 +1,59 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Slabo+27px&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
 
+.bg {
+  /* The image used */
+  background-image: url("../Asset//Navbar.png");
+  min-height: 200px;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  /* Needed to position the navbar */
+  position: relative;
+}
+
+/* Position the navbar container inside the image */
+.container {
+  position: absolute;
+  margin: 20px;
+  width: auto;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* The navbar */
+.topnav {
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  
+}
+
+.title {
+  font-size: 96px;
+  color: #fff;
+  font-weight: bold;
+  margin-left: 180px;
+  justify-content:space-between;
+  display: flex;
+
+}
+
+/* Navbar links */
+.topnav a {
+  text-decoration: flex;
+  justify-content: end;
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px;
+  padding-top: 50px;
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: bold;
+  
+}
+
+.topnav a:hover {
+  color: #C4C4C4;
+}

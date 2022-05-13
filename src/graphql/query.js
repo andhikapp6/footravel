@@ -20,6 +20,6 @@ query MyQuery {
           id
           Username
           Experience
-        }
-        }`;
+    }
+  }`;
       

@@ -3,16 +3,22 @@ import styles from './Footer.module.css';
 export default function Footer() {
   return (
     <>
-    <div className={styles.footer}>
+
+
+        <div className={styles.footer}>
             <div className={styles.wrapFooter}>
-                <div className="subFooter">
+                <div className={styles.subFooter}>
                     <div>
                         <div>Contact us</div>
+                        <div className={styles.detailFoot}>
+                            <div>Instagram</div>
+                            <div>Email</div>
+                        </div>
                     </div>
                     <div>
                         <div>Further Information</div>
                         <div className={styles.detailFoot}>
-                            <div>Terms Conditions</div>
+                            <div>Terms  Conditions</div>
                             <div>Privacy Policy</div>
                         </div>
                     </div>
@@ -24,10 +30,11 @@ export default function Footer() {
                     </div>
                 </div>
                 <div className={styles.copyright}>
-                    <div> ©  Designed by Andhika P P </div>
+                    <div>©  Designed by Andhika P P </div>
                 </div>
             </div>
         </div>
+
         </>
   )
 }
