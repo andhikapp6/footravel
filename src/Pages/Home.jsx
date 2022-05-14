@@ -86,7 +86,9 @@ export default function Home() {
                   <h5 className={styles.cardTitle}>{recommendation.Nama_Restaurant}</h5>
                   <p className={styles.cardText}>{recommendation.Jenis_Makanan}</p>
                   <p className={styles.cardText}>{recommendation.Lokasi_Restaurant}</p>
-                  <Link to={`/Detail/${recommendation.id}`} className={styles.button}>view detail</Link>
+                  <div className='text-center'>
+                  <Link to={`/Detail/${recommendation.id}`} className="btn text-center" id='btn-details'>view detail</Link>
+                  </div>
                 </div>
               </div>
             </div>
