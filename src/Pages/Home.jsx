@@ -68,7 +68,7 @@ export default function Home() {
                     Find Your Best <br /> Restaurant From Here
                   </h2>
                 </div>
-                <img src={sticker} alt="sticker" />
+                <img className={styles.sticker} src={sticker} alt="sticker" />
               </div>
             </div>
           </div>
@@ -76,10 +76,10 @@ export default function Home() {
       </header>
 
       <div className="container">
-        <div className="row">
           <div className={styles.recommendation}>Our Recommendation</div>
+        <div className="row">
           {dataQuery.Restaurant.map((recommendation) => (
-            <div className="col-md-4">
+            <div className="col-md-4 mb-4 me-6">
               <div className={styles.card}>
                 <img src={recommendation.Image_url} className="card-img-top" alt="..." />
                 <div className={styles.cardBody}>
@@ -87,7 +87,7 @@ export default function Home() {
                   <p className={styles.cardText}>{recommendation.Jenis_Makanan}</p>
                   <p className={styles.cardText}>{recommendation.Lokasi_Restaurant}</p>
                   <div className='text-center'>
-                  <Link to={`/Detail/${recommendation.id}`} className="btn text-center" id='btn-details'>view detail</Link>
+                  <Link to={`/Detail/${recommendation.id}`} className="btn btn-primary"> view detail</Link>
                   </div>
                 </div>
               </div>
@@ -108,7 +108,7 @@ export default function Home() {
                   <h5 className={styles.cardTitle}>{around.Nama_Restaurant}</h5>
                   <p className={styles.cardText}>{around.Jenis_Makanan}</p>
                   <p className={styles.cardText}>{around.Lokasi_Restaurant}</p>
-                  <Link to={`/rekomendasi/${around.Nama_Restaurant}`} className={styles.button}>view detail</Link>
+                  <Link to={`/Detail/${around.id}`} className="btn text-center" id='btn-details'>view detail</Link>
                 </div>
               </div>
             </div>

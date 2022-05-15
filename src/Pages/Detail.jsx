@@ -75,13 +75,30 @@ export default function Detail() {
     getDetailRestaurant,
     { data: dataRestaurant, loading: loadingRestaurant },
   ] = useLazyQuery(getRestaurant);
-  const [
-    getUserComment,
-    { data: dataUserComment, loading: loadingUserComment },
-  ] = useMutation(getUser);
-  const [getComment, { data: dataComment, loading: loadingComment }] =
-    useMutation(getComment);
+  
+  const  { data: dataComment, loading: loadingComment }
+   = useLazyQuery(getComment);
+   console.log("dataComment", dataComment)
+    
+  // const [
+  //   getUserComment,
+  //   { data: dataUserComment, loading: loadingUserComment },
+  // ] = useMutation(getUser);
+  
 
+    const handleSubmitComment = (e) => {
+      e.preventDefault();
+      const id_restaurant = id;
+      const Username = document.getElementById("Username").value;
+      const Experience = document.getElementById("Experience").value;
+      getComment({ variables: { id_restaurant, Username, Experience } });
+    };
+
+    const handleChangeComment = (e) => {
+      setId(e.target.value);
+    };
+    
+  
   // console.log("dataRestaurant", dataRestaurant);
   // const [getUser, { data: dataUser, loading: loadingUser }] = useLazyQuery(getUser);
 
@@ -91,7 +108,7 @@ export default function Detail() {
     if (loadingRestaurant) {
       return <div>Loading...</div>;
     }
-    getComment([{ variables: { id_restaurant: id } }]);
+    // getComment({ variables: { id_restaurant: id } });
   }, []);
   console.log("dataRestaurant", dataRestaurant);
 
@@ -119,16 +136,23 @@ export default function Detail() {
         ))}
 
         <div className={styles.comment}>
-          {dataComment?.Comment.map((coment) => (
+          {dataComment?.Comment.map((comment) => (
             <>
               <div className={styles.card}>
-                <div className={styles.comment}>{coment.Username} </div>
-                <div className={styles.comment}>{coment.Experience}</div>
-              </div>
-              
+                <div className={styles.coment}>{comment.Username} </div>
+                <div className={styles.coment}>{comment.Experience}</div>
+              </div>             
             </>
           ))}
         </div>
+
+        {/* <form action="" onSubmit={handleSubmitComment}>
+            <input type="text" placeholder='Name...' className='d-block mb-3 inputComment' value={dataComment.Username} name="Username" onChange={handleChangeComment}/>
+                <textarea id="" cols="30" rows="10" placeholder='Describe your Experience...' className='inputComment typeComment' value={dataComment.Experience} name="Experience" onChange={handleChangeComment} ></textarea>
+                    <div className='m-2 d-flex justify-content-end'>
+                        <button className="btn buttonComment">Submit</button>
+                    </div>
+          </form> */}
 
         <Footer />
       </div>

@@ -9,11 +9,15 @@
 
 .headerTitle {
 
-    padding-left: 200px ;
+    padding-left: 300px ;
     padding-right: 200px ;
     justify-content:space-between;
     display: flex;
     
+}
+
+.sticker {
+    margin-right: 70px;
 }
 h1 {
     font-weight: bold;
@@ -24,6 +28,9 @@ h2 {
     font-weight: bold;
     font-size: 48px;
 }
+
+
+
 
 
 .recommendation {
@@ -42,7 +49,7 @@ h2 {
     color: #363332;
 }
 
-.button {
+.btn {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     font-size: 24px;
