@@ -91,13 +91,16 @@ export default function Detail() {
       });
 
     };
-    
+  
+    // fungsi useEffect untuk mengambil data restaurant
+    //
   useEffect(() => {
     console.log("id", id);
     getDetailRestaurant({ variables: { id: id } });
     if (loadingRestaurant) {
       return <div>Loading...</div>;
     }
+    // fungsi useEffect untuk mengambil data comment
     getComment_({ variables: { id: id } });
     console.log("id2", id);   
   }, []);

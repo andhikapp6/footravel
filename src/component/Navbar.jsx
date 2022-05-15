@@ -4,14 +4,12 @@ import styles from "./Navbar.module.css";
 export default function Navbar() {
   return (
     <>
-      <div className={styles.bg}>
-        <div className={styles.container}>
-          <div className={styles.topnav}>
-            <div className={styles.title}>
-              Footravel </div>
-              <a href="/">Home</a>
-              <a href="/about">About Us</a>
-            </div>
+
+      <div className={styles.cobaNavbar}>
+        <div className={styles.title}>Footravel </div>
+        <div className={styles.isiNavbar}>
+          <a href="/">Home</a>
+          <a href="/about">About Us</a>
         </div>
       </div>
     </>

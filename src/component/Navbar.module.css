@@ -1,32 +1,13 @@
 
-.bg {
-  /* The image used */
+
+.cobaNavbar {
   background-image: url("../Asset//Navbar.png");
-  min-height: 200px;
-
-  /* Center and scale the image nicely */
-  background-position: center;
-  background-repeat: no-repeat;
   background-size: cover;
-
-  /* Needed to position the navbar */
-  position: relative;
-}
-
-/* Position the navbar container inside the image */
-.container {
-  position: absolute;
-  margin: 20px;
-  width: auto;
-  font-family: 'Montserrat', sans-serif;
-}
-
-/* The navbar */
-.topnav {
-  overflow: hidden;
   display: flex;
   justify-content: space-between;
-  
+  color: white;
+  height: 200px;
+  position: sticky;
 }
 
 .title {
@@ -38,10 +19,14 @@
   display: flex;
 
 }
+.isiNavbar {
+  /* background-color: salmon; */
+}
 
-/* Navbar links */
-.topnav a {
-  text-decoration: flex;
+.isiNavbar a {
+  display: inline;
+  margin-left: 30px;
+  text-decoration: none;
   justify-content: end;
   float: left;
   color: #f2f2f2;
@@ -51,9 +36,5 @@
   text-decoration: none;
   font-size: 24px;
   font-weight: bold;
-  
-}
 
-.topnav a:hover {
-  color: #C4C4C4;
 }
