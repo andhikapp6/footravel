@@ -27,91 +27,84 @@ const getRestaurant = gql`
   }
 `;
 
-const getUser = gql`
-  query MyQuery {
-    User_Comment {
-      id
-      Username
-      Experience
-    }
-  }
-`;
-
 const getComment = gql`
-  query MyQuery($_eq: Int) {
-    User_Comment(where: { id_restaurant: { _eq: $_eq } }) {
-      id_restaurant
-      id
-      Username
-      Experience
-    }
+query MyQuery($id: Int) {
+  User_Comment(where: {id: {_eq: $id}}) {
+    Experience
+    Username
+    id
+    id_Comment
   }
+}
 `;
 
 const insertComment = gql`
-  mutation MyMutation(
-    $id_restaurant: Int
-    $Username: String
-    $Experience: String
-  ) {
-    insert_User_Comment(
-      objects: {
-        id_restaurant: $id_restaurant
-        Username: $Username
-        Experience: $Experience
-      }
-    ) {
-      affected_rows
+mutation MyMutation($id: Int, $Username: String  , $Experience: String ) {
+  insert_User_Comment(objects: {id: $id, Username: $Username, Experience: $Experience}) {
+    affected_rows
+    returning {
+      id_Comment
+      Username
+      Experience
+      id
     }
   }
+}
 `;
 
 export default function Detail() {
   const params = useParams();
   const [id, setId] = useState(params.id);
-  console.log("id", id);
+  const [comment, setComment] = useState(1);
+
 
   const [
     getDetailRestaurant,
     { data: dataRestaurant, loading: loadingRestaurant },
   ] = useLazyQuery(getRestaurant);
   
-  const  { data: dataComment, loading: loadingComment }
-   = useLazyQuery(getComment);
-   console.log("dataComment", dataComment)
-    
-  // const [
-  //   getUserComment,
-  //   { data: dataUserComment, loading: loadingUserComment },
-  // ] = useMutation(getUser);
+  const [ getComment_, { data: dataComment, loading: loadingComment }
+  ]= useLazyQuery(getComment);
   
-
+  const [insertComment_, { data: dataInsertComment, loading: loadingInsertComment }
+  ] = useMutation(insertComment);
+    
     const handleSubmitComment = (e) => {
       e.preventDefault();
-      const id_restaurant = id;
-      const Username = document.getElementById("Username").value;
-      const Experience = document.getElementById("Experience").value;
-      getComment({ variables: { id_restaurant, Username, Experience } });
-    };
-
-    const handleChangeComment = (e) => {
-      setId(e.target.value);
+      insertComment_({
+        variables: {
+          id: id,
+          Username: comment.Username,
+          Experience: comment.Experience,
+        },
+      });
+      setComment ({
+        Username: "",
+        Experience: "",
+      });
     };
     
-  
-  // console.log("dataRestaurant", dataRestaurant);
-  // const [getUser, { data: dataUser, loading: loadingUser }] = useLazyQuery(getUser);
+    const handleChangeComment = (e) => {
+      setComment({
+        ...comment,
+        [e.target.name]: e.target.value,
+      });
 
+    };
+    
   useEffect(() => {
     console.log("id", id);
     getDetailRestaurant({ variables: { id: id } });
     if (loadingRestaurant) {
       return <div>Loading...</div>;
     }
-    // getComment({ variables: { id_restaurant: id } });
+    getComment_({ variables: { id: id } });
+    console.log("id2", id);   
   }, []);
   console.log("dataRestaurant", dataRestaurant);
+  console.log("dataComment", dataComment)
 
+  
   return (
     <>
       <Navbar />
@@ -136,7 +129,7 @@ export default function Detail() {
         ))}
 
         <div className={styles.comment}>
-          {dataComment?.Comment.map((comment) => (
+          {dataComment?.User_Comment.map((comment) => (
             <>
               <div className={styles.card}>
                 <div className={styles.coment}>{comment.Username} </div>
@@ -146,13 +139,13 @@ export default function Detail() {
           ))}
         </div>
 
-        {/* <form action="" onSubmit={handleSubmitComment}>
-            <input type="text" placeholder='Name...' className='d-block mb-3 inputComment' value={dataComment.Username} name="Username" onChange={handleChangeComment}/>
-                <textarea id="" cols="30" rows="10" placeholder='Describe your Experience...' className='inputComment typeComment' value={dataComment.Experience} name="Experience" onChange={handleChangeComment} ></textarea>
+        <form action="" onSubmit={handleSubmitComment}>
+            <input type="text" placeholder='Name...' className='d-block mb-3 inputComment'  onChange={handleChangeComment}/>
+                <textarea id="" cols="30" rows="10" placeholder='Describe your Experience...' className='inputComment typeComment' onChange={handleChangeComment} ></textarea>
                     <div className='m-2 d-flex justify-content-end'>
                         <button className="btn buttonComment">Submit</button>
                     </div>
-          </form> */}
+          </form>
 
         <Footer />
       </div>

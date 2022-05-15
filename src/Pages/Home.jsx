@@ -87,7 +87,7 @@ export default function Home() {
                   <p className={styles.cardText}>{recommendation.Jenis_Makanan}</p>
                   <p className={styles.cardText}>{recommendation.Lokasi_Restaurant}</p>
                   <div className='text-center'>
-                  <Link to={`/Detail/${recommendation.id}`} className="btn btn-primary"> view detail</Link>
+                  <Link to={`/Detail/${recommendation.id}`} class="btn btn-primary"> view detail</Link>
                   </div>
                 </div>
               </div>
