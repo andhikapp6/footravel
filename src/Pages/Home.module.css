@@ -3,6 +3,7 @@
 .containerHeader {
 
     width: 100%;
+    margin-left: auto;
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
 }
@@ -17,7 +18,7 @@
 }
 
 .sticker {
-    margin-right: 70px;
+    margin-right: 120px;
 }
 h1 {
     font-weight: bold;
@@ -52,8 +53,12 @@ h2 {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     font-size: 24px;
-    color: #363332;
+    color: #ffffff;
     text-decoration: none;
+    background-color: #363332;
+    margin-right:70px ;
+    border-radius: 10px;
+    padding: 10px 100px 10px 100px;
 }
 
 /* Card */
@@ -64,6 +69,14 @@ h2 {
     margin-top: 20px;
     font-family: 'Montserrat', sans-serif;
 
+}
+
+.cardImg{
+    width: 350px;
+    height: 240px;
+    border-radius: 10px;
+    margin-top: 20px;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .cardBody{

@@ -1,5 +1,4 @@
 
-
 .cobaNavbar {
   background-image: url("../Asset//Navbar.png");
   background-size: cover;
@@ -20,7 +19,7 @@
 
 }
 .isiNavbar {
-  /* background-color: salmon; */
+  padding-right:350px;
 }
 
 .isiNavbar a {
@@ -31,7 +30,7 @@
   float: left;
   color: #f2f2f2;
   text-align: center;
-  padding: 14px;
+  padding-right: 14px;
   padding-top: 50px;
   text-decoration: none;
   font-size: 24px;

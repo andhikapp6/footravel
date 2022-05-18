@@ -7,7 +7,6 @@ import {
   useQuery,
   useLazyQuery,
   useMutation,
-  useSubscription,
 } from "@apollo/client";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -27,13 +26,24 @@ const getRestaurant = gql`
   }
 `;
 
+// const getComment = gql`
+// query MyQuery($id: Int) {
+//   User_Comment(where: {id: {_eq: $id}}) {
+//     Experience
+//     Username
+//     id
+//     id_Comment
+//   }
+// }
+// `;
+
 const getComment = gql`
-query MyQuery($id: Int) {
-  User_Comment(where: {id: {_eq: $id}}) {
-    Experience
-    Username
+query MyQuery {
+  User_Comment {
     id
     id_Comment
+    Experience
+    Username
   }
 }
 `;
@@ -63,8 +73,7 @@ export default function Detail() {
     { data: dataRestaurant, loading: loadingRestaurant },
   ] = useLazyQuery(getRestaurant);
   
-  const [ getComment_, { data: dataComment, loading: loadingComment }
-  ]= useLazyQuery(getComment);
+  const { data: dataComment, loading: loadingComment } = useQuery(getComment );
   
   const [insertComment_, { data: dataInsertComment, loading: loadingInsertComment }
   ] = useMutation(insertComment);
@@ -82,6 +91,7 @@ export default function Detail() {
         Username: "",
         Experience: "",
       });
+      
     };
     
     const handleChangeComment = (e) => {
@@ -89,21 +99,22 @@ export default function Detail() {
         ...comment,
         [e.target.name]: e.target.value,
       });
-
+      
     };
   
     // fungsi useEffect untuk mengambil data restaurant
-    //
+
   useEffect(() => {
     console.log("id", id);
+    // variable id diisi dengan id yang dikirim dari url
     getDetailRestaurant({ variables: { id: id } });
     if (loadingRestaurant) {
       return <div>Loading...</div>;
     }
     // fungsi useEffect untuk mengambil data comment
-    getComment_({ variables: { id: id } });
-    console.log("id2", id);   
+    // getComment_({ variables: { id: id } });
   }, []);
+  console.log("id2", id);   
   console.log("dataRestaurant", dataRestaurant);
   console.log("dataComment", dataComment)
 
@@ -112,6 +123,7 @@ export default function Detail() {
     <>
       <Navbar />
       <div className={styles.container}>
+        <div className={styles.containerDetail}>
         {dataRestaurant?.Restaurant.map((resto) => (
           <>
             <div className={styles.card}>
@@ -121,11 +133,11 @@ export default function Detail() {
                   src={resto.Image_url}
                   alt="restaurant"
                 />
-                <h5 className={styles.cardTitle}>{resto.Nama_Restaurant}</h5>
+                <p className={styles.cardTitle}>{resto.Nama_Restaurant}</p>
                 <p className={styles.cardText}>{resto.Jenis_Makanan}</p>
                 <p className={styles.cardText}>{resto.Lokasi_Restaurant}</p>
-                <p className={styles.cardText}>{resto.Harga_Rata_Rata}</p>
-                <p className={styles.cardText}>{resto.Description}</p>
+                <p className={styles.cardHarga}>{resto.Harga_Rata_Rata}</p>
+                <p className={styles.cardDescription}>{resto.Description}</p>
               </div>
             </div>
           </>
@@ -135,21 +147,34 @@ export default function Detail() {
           {dataComment?.User_Comment.map((comment) => (
             <>
               <div className={styles.card}>
-                <div className={styles.coment}>{comment.Username} </div>
+                <div className={styles.comentName}>{comment.Username} </div>
                 <div className={styles.coment}>{comment.Experience}</div>
               </div>             
             </>
           ))}
         </div>
+        
+        <div className={styles.commentForm}>
+          <form className={styles.form} onSubmit={handleSubmitComment}>
+              <input type="text" placeholder="Name..." className={styles.commentFormNama} onChange={handleChangeComment} value={comment.Username} name="Username" />
+                <textarea id=""placeholder="Describe your Experience" className={styles.commentFormText} onChange={handleChangeComment} value={comment.Experience} name="Experience" />
+                  <div className={styles.commentFormButton}>
+                    <button className={styles.commentButton}>Submit</button>
+                  </div>
+          </form>
+        </div>
 
-        <form action="" onSubmit={handleSubmitComment}>
+
+        {/* <form action="" onSubmit={handleSubmitComment}>
             <input type="text" placeholder='Name...' className='d-block mb-3 inputComment'  onChange={handleChangeComment}/>
                 <textarea id="" cols="30" rows="10" placeholder='Describe your Experience...' className='inputComment typeComment' onChange={handleChangeComment} ></textarea>
                     <div className='m-2 d-flex justify-content-end'>
                         <button className="btn buttonComment">Submit</button>
                     </div>
-          </form>
+          </form> */}
+          
 
+        </div>
         <Footer />
       </div>
     </>

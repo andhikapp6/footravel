@@ -81,13 +81,13 @@ export default function Home() {
           {dataQuery.Restaurant.map((recommendation) => (
             <div className="col-md-4 mb-4 me-6">
               <div className={styles.card}>
-                <img src={recommendation.Image_url} className="card-img-top" alt="..." />
+                <img src={recommendation.Image_url} className={styles.cardImg} alt="..." />
                 <div className={styles.cardBody}>
                   <h5 className={styles.cardTitle}>{recommendation.Nama_Restaurant}</h5>
                   <p className={styles.cardText}>{recommendation.Jenis_Makanan}</p>
                   <p className={styles.cardText}>{recommendation.Lokasi_Restaurant}</p>
                   <div className='text-center'>
-                  <Link to={`/Detail/${recommendation.id}`} class="btn btn-primary"> view detail</Link>
+                  <Link to={`/Detail/${recommendation.id}`} className={styles.btn}> view detail</Link>
                   </div>
                 </div>
               </div>
@@ -103,20 +103,20 @@ export default function Home() {
           {dataQueryaround.Restaurant.map((around) => (
             <div className="col-md-4">
               <div className={styles.card}>
-                <img src={around.Image_url} className="card-img-top" alt="..." />
+                <img src={around.Image_url} className={styles.cardImg} alt="..." />
                 <div className={styles.cardBody}>
                   <h5 className={styles.cardTitle}>{around.Nama_Restaurant}</h5>
                   <p className={styles.cardText}>{around.Jenis_Makanan}</p>
                   <p className={styles.cardText}>{around.Lokasi_Restaurant}</p>
-                  <Link to={`/Detail/${around.id}`} className="btn text-center" id='btn-details'>view detail</Link>
+                  <div className='text-center'>
+                  <Link to={`/Detail/${around.id}`} className={styles.btn}> view detail</Link>
+                  </div>
                 </div>
               </div>
             </div>
           ))}
         </div>
-      </div>
-
-     
+      </div>   
       <Footer />
     </>
   );
