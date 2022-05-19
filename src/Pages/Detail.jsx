@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./Detail.module.css";
 import Navbar from "../component/Navbar";
 import Footer from "../component/Footer";
+import Loading from "../Asset/Loading";
 import {
   gql,
   useQuery,
@@ -26,24 +27,13 @@ const getRestaurant = gql`
   }
 `;
 
-// const getComment = gql`
-// query MyQuery($id: Int) {
-//   User_Comment(where: {id: {_eq: $id}}) {
-//     Experience
-//     Username
-//     id
-//     id_Comment
-//   }
-// }
-// `;
-
 const getComment = gql`
-query MyQuery {
-  User_Comment {
-    id
-    id_Comment
+query MyQuery($id: Int) {
+  User_Comment(where: {id: {_eq: $id}}) {
     Experience
     Username
+    id
+    id_Comment
   }
 }
 `;
@@ -73,27 +63,29 @@ export default function Detail() {
     { data: dataRestaurant, loading: loadingRestaurant },
   ] = useLazyQuery(getRestaurant);
   
-  const { data: dataComment, loading: loadingComment } = useQuery(getComment );
+  const [ getComment_, { data: dataComment, loading: loadingComment, error: errorComment }
+  ]= useLazyQuery(getComment);
   
-  const [insertComment_, { data: dataInsertComment, loading: loadingInsertComment }
+  const [insertComment_, { data: dataInsertComment, loading: loadingInsertComment, error: errorInserComment }
   ] = useMutation(insertComment);
-    
-    const handleSubmitComment = (e) => {
-      e.preventDefault();
-      insertComment_({
-        variables: {
-          id: id,
-          Username: comment.Username,
-          Experience: comment.Experience,
-        },
-      });
-      setComment ({
-        Username: "",
-        Experience: "",
-      });
+
+  
+  const handleSubmitComment = (e) => {
+    e.preventDefault();
+    insertComment_({
+      variables: {
+        id: id,
+        Username: comment.Username,
+        Experience: comment.Experience,
+      },
+    });
+    setComment ({
+      Username: "",
+      Experience: "",
+    });
       
     };
-    
+    // e.target.value inputan yang diisi
     const handleChangeComment = (e) => {
       setComment({
         ...comment,
@@ -101,20 +93,25 @@ export default function Detail() {
       });
       
     };
-  
+    
     // fungsi useEffect untuk mengambil data restaurant
-
-  useEffect(() => {
-    console.log("id", id);
-    // variable id diisi dengan id yang dikirim dari url
-    getDetailRestaurant({ variables: { id: id } });
+    
+    useEffect(() => {
+      // variable id diisi dengan id yang dikirim dari url
+      getDetailRestaurant({ variables: { id: id } });
+      // fungsi useEffect untuk mengambil data comment
+      getComment_({ variables: { id: id } });
+      console.log("id", id);   
+    }, []);
+    
+    if (errorComment) return <p>Error {console.error(errorComment)}</p>;
     if (loadingRestaurant) {
-      return <div>Loading...</div>;
-    }
-    // fungsi useEffect untuk mengambil data comment
-    // getComment_({ variables: { id: id } });
-  }, []);
-  console.log("id2", id);   
+      return (
+      <div>
+        <Loading />
+      </div>
+    );
+  }
   console.log("dataRestaurant", dataRestaurant);
   console.log("dataComment", dataComment)
 
@@ -136,8 +133,10 @@ export default function Detail() {
                 <p className={styles.cardTitle}>{resto.Nama_Restaurant}</p>
                 <p className={styles.cardText}>{resto.Jenis_Makanan}</p>
                 <p className={styles.cardText}>{resto.Lokasi_Restaurant}</p>
-                <p className={styles.cardHarga}>{resto.Harga_Rata_Rata}</p>
+                <p className={styles.Description}><span>Description</span></p>
                 <p className={styles.cardDescription}>{resto.Description}</p>
+                <p className={styles.cardHarga}>{resto.Harga_Rata_Rata}</p>
+                <p className={styles.Review}><span>Review</span></p>
               </div>
             </div>
           </>

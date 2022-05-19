@@ -3,6 +3,7 @@ import styles from "./Home.module.css";
 import Footer from "../component/Footer";
 import Navbar from "../component/Navbar";
 import sticker from "../Asset/sticker.png";
+import Loading from "../Asset/Loading";
 import { gql, useQuery } from "@apollo/client";
 import { Link } from 'react-router-dom';
 
@@ -42,17 +43,12 @@ export default function Home() {
   } = useQuery(GetRestaurantAround);
 
   if (loadingQuery) {
-    return <div>Loading...</div>;
+    return <div><Loading /></div>;
   }
   if (loadingQueryaround) {
-    return <div>Loading...</div>;
+    return <div><Loading /></div>;
   }
-  if (error) {
-    return <div>Error...</div>;
-  }
-  if (erroraround) {
-    return <div>Error...</div>;
-  }
+
 
   return (
     <>
