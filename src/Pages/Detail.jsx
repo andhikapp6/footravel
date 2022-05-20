@@ -5,67 +5,59 @@ import Footer from "../component/Footer";
 import Loading from "../Asset/Loading";
 import {
   gql,
-  useQuery,
-  useLazyQuery,
   useMutation,
+  useSubscription,
 } from "@apollo/client";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
-const getRestaurant = gql`
-  query MyQuery($id: Int) {
-    Restaurant(where: { id: { _eq: $id } }) {
-      id
-      Image_url
-      Nama_Restaurant
-      Jenis_Makanan
-      Lokasi_Restaurant
-      Harga_Rata_Rata
-      Description
-    }
-  }
-`;
 
-const getComment = gql`
-query MyQuery($id: Int) {
-  User_Comment(where: {id: {_eq: $id}}) {
-    Experience
-    Username
+
+const getRestaurant = gql`
+subscription MySubscription($_eq: Int ) {
+  Restaurant(where: {id: {_eq: $_eq}}) {
+    Description
+    Harga_Rata_Rata
+    Image_url
+    Jenis_Makanan
+    Lokasi_Restaurant
+    Nama_Restaurant
     id
-    id_Comment
+    id_User
+    Category
+    Comment_Users {
+      Username
+      id
+      id_Restaurant
+      Experience
+    }
   }
 }
+
 `;
 
+
 const insertComment = gql`
-mutation MyMutation($id: Int, $Username: String  , $Experience: String ) {
-  insert_User_Comment(objects: {id: $id, Username: $Username, Experience: $Experience}) {
+mutation MyMutation($Experience: String = "", $Username: String = "" , $id_Restaurant: Int ) {
+  insert_Comment_User(objects: {Experience: $Experience, Username: $Username, id_Restaurant: $id_Restaurant}) {
     affected_rows
-    returning {
-      id_Comment
-      Username
-      Experience
-      id
-    }
   }
 }
 `;
 
 export default function Detail() {
+  // useparams digunakan untuk mengambil data dari url
   const params = useParams();
+  // params.id itu buat nyimpen parameter id yang ada di url halaman website
   const [id, setId] = useState(params.id);
+  // comment berfungsi untuk mengambil data dari url
+  // setcomment berfungsi untuk mengisi komen
   const [comment, setComment] = useState(1);
 
 
-  const [
-    getDetailRestaurant,
-    { data: dataRestaurant, loading: loadingRestaurant },
-  ] = useLazyQuery(getRestaurant);
-  
-  const [ getComment_, { data: dataComment, loading: loadingComment, error: errorComment }
-  ]= useLazyQuery(getComment);
-  
+  const { data: dataRestaurant, loading: loadingRestaurant } = useSubscription(getRestaurant, {variables: {_eq: id}});
+
   const [insertComment_, { data: dataInsertComment, loading: loadingInsertComment, error: errorInserComment }
   ] = useMutation(insertComment);
 
@@ -73,8 +65,9 @@ export default function Detail() {
   const handleSubmitComment = (e) => {
     e.preventDefault();
     insertComment_({
+      // id_Restaurant didapat dari params.id
       variables: {
-        id: id,
+        id_Restaurant: id,
         Username: comment.Username,
         Experience: comment.Experience,
       },
@@ -90,21 +83,10 @@ export default function Detail() {
       setComment({
         ...comment,
         [e.target.name]: e.target.value,
-      });
-      
+      });      
     };
-    
-    // fungsi useEffect untuk mengambil data restaurant
-    
-    useEffect(() => {
-      // variable id diisi dengan id yang dikirim dari url
-      getDetailRestaurant({ variables: { id: id } });
-      // fungsi useEffect untuk mengambil data comment
-      getComment_({ variables: { id: id } });
-      console.log("id", id);   
-    }, []);
-    
-    if (errorComment) return <p>Error {console.error(errorComment)}</p>;
+   
+    // if (errorComment) return <p>Error {console.error(errorComment)}</p>;
     if (loadingRestaurant) {
       return (
       <div>
@@ -113,9 +95,8 @@ export default function Detail() {
     );
   }
   console.log("dataRestaurant", dataRestaurant);
-  console.log("dataComment", dataComment)
+  // console.log("dataComment", dataComment)
 
-  
   return (
     <>
       <Navbar />
@@ -139,11 +120,8 @@ export default function Detail() {
                 <p className={styles.Review}><span>Review</span></p>
               </div>
             </div>
-          </>
-        ))}
-
         <div className={styles.comment}>
-          {dataComment?.User_Comment.map((comment) => (
+          {resto.Comment_Users.map((comment) => (
             <>
               <div className={styles.card}>
                 <div className={styles.comentName}>{comment.Username} </div>
@@ -152,6 +130,9 @@ export default function Detail() {
             </>
           ))}
         </div>
+          </>
+        ))}
+
         
         <div className={styles.commentForm}>
           <form className={styles.form} onSubmit={handleSubmitComment}>
